@@ -5,7 +5,7 @@ import Footer from './Footer.jsx'
 
 const Body = () => {
   return (
-    <div className="bg-gray-900">
+    <div className="bg-gray-800 ">
       <NavBar />
       <Outlet />
       <Footer/>

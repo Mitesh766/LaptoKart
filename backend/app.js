@@ -1,8 +1,9 @@
-import express from 'express'
+import express from "express";
+import dotenv from "dotenv";
+const app = express();
 
-const app = express()
+dotenv.config();
 
-
-app.listen(3000,()=>{
-    console.log("App successfully listening on port 3000")
-})
+app.listen(3000, () => {
+  console.log("App successfully listening on port 3000");
+});
