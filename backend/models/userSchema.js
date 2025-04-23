@@ -1,4 +1,4 @@
-import mongoose, { models } from "mongoose";
+import mongoose from "mongoose";
 import jwt from "jsonwebtoken";
 const userSchema = new mongoose.Schema(
   {
@@ -11,16 +11,16 @@ const userSchema = new mongoose.Schema(
       type: String,
       required: true,
       trim: true,
-      unique: true, // Ensure unique emails
+      unique: true,
     },
     password: {
       type: String,
       required: true,
       trim: true,
     },
-    role: {
-      type: String,
-      default: "User",
+    isAdmin: {
+      type: Boolean,
+      default: false,
     },
     orders: [
       {
@@ -45,18 +45,17 @@ const userSchema = new mongoose.Schema(
   { timestamps: true }
 );
 
-userSchema.methods.generateAuthToken = () => {
+userSchema.methods.generateAuthToken = function () {
   const token = jwt.sign(
     {
       _id: this._id,
-      email: this.email,
     },
     process.env.JWT_SECRET_KEY,
     {
       expiresIn: "7d",
     }
   );
-  return token
+  return token;
 };
 
 export default mongoose.model("User", userSchema);
