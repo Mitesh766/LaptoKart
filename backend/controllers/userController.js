@@ -1,11 +1,13 @@
 import asyncHandler from "../utils/asyncHandler.js";
 import bcrypt from "bcrypt";
 import User from "../models/userSchema.js";
+import Product from "../models/productSchema.js";
 import validator from "validator";
+import Order from "../models/orderSchema.js";
 
 import { validateUserData } from "../utils/validate.js";
 
-export const login = asyncHandler(async (req, res) => {
+export const loginUser = asyncHandler(async (req, res) => {
   if (!req?.body || !req?.body?.email || !req?.body?.password) {
     res.status(400);
     throw new Error("Please fill all details");
@@ -46,7 +48,7 @@ export const login = asyncHandler(async (req, res) => {
   });
 });
 
-export const signup = asyncHandler(async (req, res) => {
+export const registerUser = asyncHandler(async (req, res) => {
   if (
     !req?.body ||
     !req?.body?.email ||
@@ -103,24 +105,25 @@ export const getProfile = asyncHandler(async (req, res) => {
 });
 
 export const updateProfile = asyncHandler(async (req, res) => {
-
-  if (!req.body || !req.body.username || !req.body.email || !req.body.address) {
+  if (!req.body || !req.body.name || !req.body.email || !req.body.address) {
     res.status(400);
     throw new Error("Please fill all the details");
   }
 
   const { name, email, address } = req.body;
+  const { street, city, state, pincode, country } = address;
+
+  if (!street || !city || !state || !pincode || !country) {
+    res.status(400);
+    throw new Error("Please fill the complete address");
+  }
 
   if (!validator.isEmail(email)) {
     res.status(400);
     throw new Error("Invalid email address");
   }
 
-  const user = await User.findById(req.user._id);
-  if (!user) {
-    res.status(404);
-    throw new Error("No such user exists");
-  }
+  const user = req.user;
 
   user.name = name || user.name;
   user.email = email || user.email;
@@ -138,6 +141,59 @@ export const updateProfile = asyncHandler(async (req, res) => {
   });
 });
 
+export const getWishList = asyncHandler(async (req, res) => {
+  const user = await User.findById(req.user._id)
+    .populate("wishlist")
+    .select("wishlist");
+  res.status(200).json({
+    message: "Wishlist fetched successfully",
+    data: user.wishlist,
+  });
+});
 
+export const addToWishList = asyncHandler(async (req, res) => {
+  const { productId } = req.params;
+  const productExists = await Product.findById(productId);
+  if (!productExists) {
+    res.status(404);
+    throw new Error("No such product exists");
+  }
+  const user = await User.findById(req.user._id);
 
+  if (user.wishlist.includes(productId)) {
+    res.status(400);
+    throw new Error("Product is already in your wishlist");
+  }
 
+  user.wishlist.push(productId);
+  await user.save();
+
+  res.status(201).json({
+    message: "Product successfully added to wishlist",
+  });
+});
+
+export const removeFromWishList = asyncHandler(async (req, res) => {
+  const { productId } = req.params;
+  const user = await User.findById(req.user._id).select("wishlist");
+
+  if (!user.wishlist.includes(productId)) {
+    res.status(404);
+    throw new Error("No such produt in wishlist");
+  }
+  user.wishlist.pull(productId);
+  await user.save();
+  res.status(200).json({
+    message: "Product successfully removed from wishlist",
+  });
+});
+
+export const getOrders = asyncHandler(async (req, res) => {
+  const user = await User.findById(req.user._id)
+    .populate("orders")
+    .select("orders");
+  res.status(200).json({
+    message: "Orders fetched successfully",
+    data: user.orders,
+  });
+});
