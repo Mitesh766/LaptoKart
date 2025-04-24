@@ -15,6 +15,7 @@ export const getAllUsers = asyncHandler(async (req, res) => {
   });
 });
 
+
 export const createProduct = asyncHandler(async (req, res) => {
   const {
     name,
@@ -66,9 +67,6 @@ export const createProduct = asyncHandler(async (req, res) => {
     data: createdProduct,
   });
 });
-
-import asyncHandler from "express-async-handler";
-import Product from "../models/productModel.js";
 
 export const updateProduct = asyncHandler(async (req, res) => {
   const { productId } = req.params;
