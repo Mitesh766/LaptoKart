@@ -1,5 +1,6 @@
 import mongoose from "mongoose";
 import jwt from "jsonwebtoken";
+
 const userSchema = new mongoose.Schema(
   {
     name: {
@@ -24,14 +25,60 @@ const userSchema = new mongoose.Schema(
     },
     orders: [
       {
-        type: mongoose.Schema.Types.ObjectId,
-        ref: "Order",
+        productId: {
+          type: mongoose.Schema.Types.ObjectId,
+          ref: "Order",
+          required: true,
+          validate: {
+            validator: function (v) {
+              return mongoose.Types.ObjectId.isValid(v);
+            },
+            message: "Invalid Order ID",
+          },
+        },
+        quantity: {
+          type: Number,
+          required: true,
+        },
       },
     ],
     wishlist: [
       {
-        type: mongoose.Schema.Types.ObjectId,
-        ref: "Product",
+        productId: {
+          type: mongoose.Schema.Types.ObjectId,
+          ref: "Product",
+          required: true,
+          validate: {
+            validator: function (v) {
+              return mongoose.Types.ObjectId.isValid(v);
+            },
+            message: "Invalid Product ID",
+          },
+        },
+        quantity: {
+          type: Number,
+          default: 1,
+        },
+      },
+    ],
+    cart: [
+      {
+        productId: {
+          type: mongoose.Schema.Types.ObjectId,
+          ref: "Product",
+          required: true,
+          validate: {
+            validator: function (v) {
+              return mongoose.Types.ObjectId.isValid(v);
+            },
+            message: "Invalid Product ID",
+          },
+        },
+        quantity: {
+          type: Number,
+          required: true,
+          min: 1,
+        },
       },
     ],
     address: {

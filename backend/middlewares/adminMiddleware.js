@@ -1,4 +1,4 @@
-import asyncHandler from "../utils/asyncHandler";
+import asyncHandler from "../utils/asyncHandler.js";
 
 const adminAuthenticate = asyncHandler(async (req, res, next) => {
   if (!req.user || !req.user.isAdmin) {
