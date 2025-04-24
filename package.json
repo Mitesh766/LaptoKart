@@ -7,7 +7,7 @@
     "backend": "nodemon backend/app.js",
     "dev":"concurrently \"npm run frontend\" \"npm run backend\" "
   },
-  "author": "",
+  "author": "Mitesh Agrawal",
   "license": "ISC",
   "description": "",
   "dependencies": {
