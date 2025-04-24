@@ -1,12 +1,19 @@
-import express from "express"
-import userAuth from "../middlewares/authMiddleware.js"
-import adminAuthenticate from "../middlewares/adminMiddleware.js"
-import { getAllUsers } from "../controllers/adminController.js"
+import express from "express";
+import userAuth from "../middlewares/authMiddleware.js";
+import adminAuthenticate from "../middlewares/adminMiddleware.js";
+import { createProduct, getAllUsers } from "../controllers/adminController.js";
+import upload from "../middlewares/multer.js";
+const router = express.Router();
 
-const router = express.Router()
+router.get("/getAllUsers", userAuth, adminAuthenticate, getAllUsers);
 
+router.post(
+    "/createProduct",
+    userAuth,
+    adminAuthenticate,
+    upload.single("image"),
+    createProduct
+  );
+  
 
-router.get("/getAllUsers",userAuth,adminAuthenticate,getAllUsers)
-
-
-export default router
+export default router;

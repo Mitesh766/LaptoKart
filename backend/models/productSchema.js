@@ -55,10 +55,10 @@ const productSchema = new mongoose.Schema(
     operatingSystem: {
       type: String,
     },
-    image: {
+    image: [{
       type: String,
       default: "/images/sample.jpg", // or store cloudinary path
-    },
+    }],
     ratings: {
       type: Number,
       default: 0,

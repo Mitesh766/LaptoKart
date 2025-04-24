@@ -15,11 +15,13 @@ const app = express();
 
 app.use(express.json());
 app.use(cookieParser());
+app.use(express.urlencoded({ extended: true }));
 
 app.use("/api/user", userRouter);
 app.use("/api/products", productRouter);
 app.use("/api/cart", cartRouter);
 app.use("/api/admin", adminRouter);
+
 
 app.listen(3000, () => {
   console.log("App successfully listening on port 3000");
