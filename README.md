@@ -182,5 +182,5 @@ Welcome to **LaptoKart**, an e-commerce platform built specifically for selling 
 
 ## Contact
 
-Your Name - miteshagrawal972@gmail.com
+Email - miteshagrawal972@gmail.com
 Project Link: [https://github.com/Mitesh766/laptokart](https://github.com/Mitesh766/laptokart)
