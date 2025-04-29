@@ -11,6 +11,9 @@ Welcome to **LaptoKart**, an e-commerce platform built specifically for selling 
     │   ├── app.js
     │   ├── package-lock.json
     │   ├── package.json
+    |   ├── config/
+    │   │   ├── cloudinary.js
+    │   |   └── db.js
     │   ├── controllers/
     │   │   ├── adminController.js
     │   │   ├── cartController.js
@@ -31,8 +34,6 @@ Welcome to **LaptoKart**, an e-commerce platform built specifically for selling 
     │   │   └── userRoutes.js
     │   └── utils/
     │       ├── asyncHandler.js
-    │       ├── cloudinary.js
-    │       ├── db.js
     │       └── validate.js
     └── frontend/
         ├── README.md

@@ -6,7 +6,7 @@ import productRouter from "./routes/productRoutes.js";
 import cartRouter from "./routes/cartRoutes.js";
 import adminRouter from "./routes/adminRoutes.js";
 
-import connectDB from "./utils/db.js";
+import connectDB from "./config/db.js";
 
 dotenv.config();
 connectDB();

@@ -1,7 +1,7 @@
 import asyncHandler from "../utils/asyncHandler.js";
 import User from "../models/userSchema.js";
 import Product from "../models/productSchema.js";
-import cloudinary from "../utils/cloudinary.js";
+import cloudinary from "../config/cloudinary.js";
 
 export const getAllUsers = asyncHandler(async (req, res) => {
   const users = await User.find({})

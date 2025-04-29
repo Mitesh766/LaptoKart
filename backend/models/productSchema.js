@@ -57,7 +57,6 @@ const productSchema = new mongoose.Schema(
     },
     image: [{
       type: String,
-      default: "/images/sample.jpg", // or store cloudinary path
     }],
     ratings: {
       type: Number,
