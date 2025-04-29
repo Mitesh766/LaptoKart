@@ -2,19 +2,21 @@ import React from 'react';
 
 const Footer = () => {
   return (
-    <footer className="bg-gray-900 text-white py-8  bottom-0 w-full mt-10">
+    <footer className="bg-[#1A365D] text-white py-8 mt-10">
       <div className="max-w-screen-xl mx-auto px-4">
         <div className="flex flex-wrap justify-between items-center">
           {/* Logo Section */}
           <div className="w-full md:w-1/3 mb-4 md:mb-0">
             <a href="/" className="flex items-center space-x-3 rtl:space-x-reverse">
-              <span className="self-center text-2xl font-semibold whitespace-nowrap">{"¯`·.¸¸.·´¯`·.¸¸.-> 𝕃𝕒𝕡𝕥𝕠𝕂𝕒𝕣𝕥 <-.¸¸.·´¯`·.¸¸.·´¯"}</span>
+              <span className="self-center text-2xl font-semibold whitespace-nowrap text-white">
+                {"¯`·.¸¸.·´¯`·.¸¸.-> 𝕃𝕒𝕡𝕥𝕠𝕂𝕒𝕣𝕥 <-.¸¸.·´¯`·.¸¸.·´¯"}
+              </span>
             </a>
           </div>
 
           {/* Quick Links Section */}
           <div className="w-full md:w-1/3 mb-4 md:mb-0">
-            <h5 className="text-xl font-semibold mb-4">Quick Links</h5>
+            <h5 className="text-xl font-semibold mb-4 text-white">Quick Links</h5>
             <ul className="space-y-2">
               <li>
                 <a href="/products" className="hover:text-blue-500">Shop</a>
@@ -33,7 +35,7 @@ const Footer = () => {
 
           {/* Social Media & Contact Info Section */}
           <div className="w-full md:w-1/3">
-            <h5 className="text-xl font-semibold mb-4">Follow Us</h5>
+            <h5 className="text-xl font-semibold mb-4 text-white">Follow Us</h5>
             <div className="flex space-x-4">
               <a href="https://www.facebook.com" className="text-white hover:text-blue-500" aria-label="Facebook">
                 <svg xmlns="http://www.w3.org/2000/svg" className="w-6 h-6" fill="currentColor" viewBox="0 0 24 24" stroke="currentColor">

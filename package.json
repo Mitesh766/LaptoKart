@@ -5,12 +5,13 @@
   "scripts": {
     "frontend": "cd frontend && npm run dev",
     "backend": "nodemon backend/app.js",
-    "dev":"concurrently \"npm run frontend\" \"npm run backend\" "
+    "dev": "concurrently \"npm run frontend\" \"npm run backend\" "
   },
   "author": "Mitesh Agrawal",
   "license": "ISC",
   "description": "",
   "dependencies": {
-    "concurrently": "^9.1.2"
+    "concurrently": "^9.1.2",
+    "react-toastify": "^11.0.5"
   }
 }

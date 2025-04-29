@@ -1,86 +1,136 @@
 import React, { useState } from 'react';
+import { USERS_URL } from '../utils/constants';
+import axios from 'axios';
+import { useNavigate } from 'react-router-dom';
+import { useDispatch } from 'react-redux';
+import { setCredentials } from '../redux/userSlice';
+import { toast } from 'react-toastify';
+import 'react-toastify/dist/ReactToastify.css';
 
 const Login = () => {
   const [isSignIn, setIsSignIn] = useState(true);
+  const [email, setEmail] = useState("");
+  const [password, setPassword] = useState("");
+  const [username, setUserName] = useState("");
+  const navigate = useNavigate();
+  const dispatch = useDispatch();
+
+  const handleLogin = async (e) => {
+    e.preventDefault();
+    if (!email.trim() || !password.trim()) {
+      toast.error("Email and password are required");
+      return;
+    }
+
+    try {
+      const resp = await axios.post(`${USERS_URL}/login`, {
+        email: email.trim(),
+        password: password.trim()
+      }, {
+        withCredentials: true
+      });
+
+      dispatch(setCredentials(resp.data.data));
+      toast.success("Login successful!");
+      setTimeout(() => navigate("/"), 1500);
+    }
+    catch (err) {
+      toast.error(err.response?.data?.message || "Login failed");
+    }
+  };
+
+  const handleSignUp = async (e) => {
+    e.preventDefault();
+    if (!email.trim() || !password.trim() || !username.trim()) {
+      toast.error("All fields are required");
+      return;
+    }
+
+    try {
+      const resp = await axios.post(`${USERS_URL}/register`, {
+        email: email.trim(),
+        name: username.trim(),
+        password: password.trim()
+      }, { withCredentials: true });
+
+      dispatch(setCredentials(resp.data.data));
+      toast.success("Account created successfully!");
+      setTimeout(() => navigate("/"), 1500);
+    }
+    catch (err) {
+      toast.error(err.response?.data?.message || "Signup failed");
+    }
+  };
 
   return (
-    <div className="flex  justify-center items-center">
-      <div className="w-full max-w-sm p-4 bg-white border border-gray-200 rounded-lg shadow-sm sm:p-6 md:p-8 dark:bg-gray-800 dark:border-gray-700">
-        <form className="space-y-6" action="#">
-          <h5 className="text-xl font-medium text-gray-900 dark:text-white">
-            {isSignIn ? "Sign in" : "Sign Up"} to our platform
-          </h5>
-          {!isSignIn && <div>
-            <label htmlFor="password" className="block mb-2 text-sm font-medium text-gray-900 dark:text-white">
-              Your Name
-            </label>
-            <input
-              type="text"
-              name="text"
-              id="text"
-              placeholder="name"
-              className="bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-blue-500 focus:border-blue-500 block w-full p-2.5 dark:bg-gray-600 dark:border-gray-500 dark:placeholder-gray-400 dark:text-white"
-              required
-            />
-          </div>}
+    <div className="flex justify-center items-center min-h-[1/2] bg-gray-900 text-white px-4">
+      <div className="w-full max-w-sm p-6 bg-gray-800 border border-gray-700 rounded-lg shadow">
+        <form className="space-y-6" onSubmit={isSignIn ? handleLogin : handleSignUp}>
+          <h5 className="text-xl font-medium">{
+            isSignIn ? "Sign in" : "Sign Up"
+          } to our platform</h5>
+
+          {!isSignIn && (
+            <div>
+              <label htmlFor="username" className="block mb-2 text-sm font-medium">
+                Your Name
+              </label>
+              <input
+                type="text"
+                id="username"
+                value={username}
+                placeholder="Enter your full name"
+                onChange={(e) => setUserName(e.target.value)}
+                className="bg-gray-700 border border-gray-600 text-white text-sm rounded-lg block w-full p-2.5 placeholder-gray-400"
+                required
+              />
+            </div>
+          )}
+
           <div>
-            <label htmlFor="email" className="block mb-2 text-sm font-medium text-gray-900 dark:text-white">
+            <label htmlFor="email" className="block mb-2 text-sm font-medium">
               Your email
             </label>
             <input
               type="email"
-              name="email"
               id="email"
-              className="bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-blue-500 focus:border-blue-500 block w-full p-2.5 dark:bg-gray-600 dark:border-gray-500 dark:placeholder-gray-400 dark:text-white"
-              placeholder="name@company.com"
+              value={email}
+              onChange={(e) => setEmail(e.target.value)}
+              placeholder="Enter your email address"
+              className="bg-gray-700 border border-gray-600 text-white text-sm rounded-lg block w-full p-2.5 placeholder-gray-400"
               required
             />
           </div>
+
           <div>
-            <label htmlFor="password" className="block mb-2 text-sm font-medium text-gray-900 dark:text-white">
+            <label htmlFor="password" className="block mb-2 text-sm font-medium">
               Your password
             </label>
-            <input  
+            <input
               type="password"
-              name="password"
               id="password"
+              value={password}
+              onChange={(e) => setPassword(e.target.value)}
               placeholder="••••••••"
-              className="bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-blue-500 focus:border-blue-500 block w-full p-2.5 dark:bg-gray-600 dark:border-gray-500 dark:placeholder-gray-400 dark:text-white"
+              className="bg-gray-700 border border-gray-600 text-white text-sm rounded-lg block w-full p-2.5 placeholder-gray-400"
               required
             />
           </div>
-          <div className="flex items-start">
-            <div className="flex items-start">
-              <div className="flex items-center h-5">
-                <input
-                  id="remember"
-                  type="checkbox"
-                  className="w-4 h-4 border border-gray-300 rounded-sm bg-gray-50 focus:ring-3 focus:ring-blue-300 dark:bg-gray-700 dark:border-gray-600 dark:focus:ring-blue-600 dark:ring-offset-gray-800 dark:focus:ring-offset-gray-800"
-                  required
-                />
-              </div>
-              <label htmlFor="remember" className="ms-2 text-sm font-medium text-gray-900 dark:text-gray-300">
-                Remember me
-              </label>
-            </div>
-            {isSignIn && (
-              <a href="#" className="ms-auto text-sm text-blue-700 hover:underline dark:text-blue-500">
-                Lost Password?
-              </a>
-            )}
-          </div>
+
           <button
             type="submit"
-            className="w-full text-white bg-blue-700 hover:bg-blue-800 focus:ring-4 focus:outline-none focus:ring-blue-300 font-medium rounded-lg text-sm px-5 py-2.5 text-center dark:bg-blue-600 dark:hover:bg-blue-700 dark:focus:ring-blue-800"
+            className="w-full text-white bg-blue-600 hover:bg-blue-700 focus:ring-4 
+              focus:outline-none focus:ring-blue-800 font-medium rounded-lg text-sm px-5 py-2.5 text-center mt-3"
           >
             {isSignIn ? "Login to your account" : "Create your account"}
           </button>
-          <div className="text-sm font-medium text-gray-500 dark:text-gray-300">
+
+          <div className="text-sm font-medium text-gray-400">
             {isSignIn ? "Not registered?" : "Already registered?"}{" "}
             <button
               type="button"
               onClick={() => setIsSignIn(!isSignIn)}
-              className="text-blue-700 hover:underline dark:text-blue-500"
+              className="text-blue-400 hover:underline"
             >
               {isSignIn ? "Create account" : "Sign In"}
             </button>

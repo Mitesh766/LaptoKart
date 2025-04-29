@@ -1,21 +1,28 @@
-import React from 'react'
-import { BrowserRouter, Route, Routes } from 'react-router-dom'
-import Body from './Components/Body'
-import Login from './Components/Login'
+import React from 'react';
+import { BrowserRouter, Route, Routes } from 'react-router-dom';
+import Body from './Components/Body';
+import Login from './Components/Login';
+import AllProducts from './Components/AllProducts';
+import NotFound from './Components/NotFound';
+
 
 const App = () => {
   return (
-
     <>
       <BrowserRouter>
-        <Routes>
-          <Route path='/' element={<Body />}>
-            <Route path="login" element={<Login />} />
-          </Route>
-        </Routes>
+        <div className="min-h-screen bg-gray-50 dark:bg-gray-900 text-gray-900 dark:text-gray-100">
+          <Routes>
+            <Route path='/' element={<Body />}>
+              <Route path="" element={<AllProducts />} />
+              <Route path="login" element={<Login />} />
+              <Route path="*" element={<NotFound />} /> 
+            </Route>
+          </Routes>
+        </div>
       </BrowserRouter>
+     
     </>
-  )
-}
+  );
+};
 
-export default App
+export default App;
