@@ -4,6 +4,7 @@ import Body from './Components/Body';
 import Login from './Components/Login';
 import AllProducts from './Components/AllProducts';
 import NotFound from './Components/NotFound';
+import CreateProduct from './Components/Admin/createProduct';
 
 
 const App = () => {
@@ -15,12 +16,13 @@ const App = () => {
             <Route path='/' element={<Body />}>
               <Route path="" element={<AllProducts />} />
               <Route path="login" element={<Login />} />
-              <Route path="*" element={<NotFound />} /> 
+              <Route path="createProduct" element={<CreateProduct />} />
+              <Route path="*" element={<NotFound />} />
             </Route>
           </Routes>
         </div>
       </BrowserRouter>
-     
+
     </>
   );
 };

@@ -10,9 +10,20 @@ const productSchema = new mongoose.Schema(
     brand: {
       type: String,
       required: [true, "Please provide brand name"],
+      enum: [
+        "HP",
+        "Dell",
+        "Lenovo",
+        "Asus",
+        "Acer",
+        "MSI",
+        "Apple",
+        "Samsung",
+        "Microsoft"
+      ],
     },
     description: {
-      type: String,
+      type: [String],
       required: [true, "Please provide a description"],
     },
     price: {
@@ -28,13 +39,16 @@ const productSchema = new mongoose.Schema(
       type: String,
       required: [true, "Please provide category"],
       enum: [
-        "Gaming",
-        "Business",
-        "Ultrabook",
-        "Student",
-        "2-in-1",
-        "Workstation",
-        "Chromebook",
+        "Gaming Laptops",
+        "Business & Office",
+        "Student Laptops",
+        "2-in-1 Convertibles",
+        "Workstations",
+        "Chromebooks",
+        "Everyday Use",
+        "Ultrabooks",
+        "Creator & Editing",
+        "MacBook"
       ],
     },
     processor: {
@@ -42,9 +56,11 @@ const productSchema = new mongoose.Schema(
     },
     ram: {
       type: String,
+      enum: ["4GB", "8GB", "16GB", "32GB", "64GB"],
     },
     storage: {
       type: String,
+      enum: ["128GB SSD", "256GB SSD", "512GB SSD", "1TB HDD", "1TB SSD"],
     },
     screenSize: {
       type: String,
@@ -54,10 +70,13 @@ const productSchema = new mongoose.Schema(
     },
     operatingSystem: {
       type: String,
+      enum: ["Windows", "macOS", "Linux", "ChromeOS"],
     },
-    image: [{
-      type: String,
-    }],
+    image: [
+      {
+        type: String,
+      },
+    ],
     ratings: {
       type: Number,
       default: 0,
