@@ -15,9 +15,8 @@ export const getAllUsers = asyncHandler(async (req, res) => {
   });
 });
 
-
 export const createProduct = asyncHandler(async (req, res) => {
-  const {
+  let {
     name,
     brand,
     description,
@@ -36,6 +35,11 @@ export const createProduct = asyncHandler(async (req, res) => {
     res.status(400);
     throw new Error("Please provide all required fields");
   }
+
+  if (typeof description === "string") {
+    description = description.split(","); // Split by comma if it's a single string
+  }
+  console.log(description);
 
   if (!req?.file?.path) {
     res.status(400);
@@ -117,7 +121,7 @@ export const updateProduct = asyncHandler(async (req, res) => {
   product.operatingSystem = operatingSystem;
 
   if (req?.file?.path) {
-    product.image = [req.file.path]; 
+    product.image = [req.file.path];
   }
 
   const updatedProduct = await product.save();

@@ -41,16 +41,17 @@ const CreateProduct = () => {
 
     const handleSubmit = async (e) => {
         e.preventDefault();
-
+    
+        
         const descriptionPoints = description
-            .split('\n')
-            .map(line => line.trim())
+            .split('\n')                 
+            .map(line => line.trim())     
             .filter(line => line.length > 0);
-
+    
         const formData = new FormData();
         formData.append('name', name);
         formData.append('brand', brand);
-        formData.append('description', JSON.stringify(descriptionPoints));
+        formData.append('description', descriptionPoints); 
         formData.append('price', price);
         formData.append('countInStock', countInStock);
         formData.append('category', category);
@@ -61,24 +62,24 @@ const CreateProduct = () => {
         formData.append('graphicsCard', graphicsCard);
         formData.append('operatingSystem', operatingSystem);
         formData.append('image', image);
-
+    
         try {
             const res = await fetch(ADMIN_URL + "/createProduct", {
                 method: 'POST',
                 body: formData,
             });
-
+    
             const data = await res.json();
             if (!res.ok) {
                 throw new Error(data.message || 'Failed to create product');
             }
-
+    
             toast.success("Product created successfully!");
         } catch (err) {
             toast.error(err.message || "Product creation failed");
         }
     };
-
+    
     const handleImageChange = (e) => {
         const file = e.target.files[0];
         setImage(file);
@@ -91,7 +92,7 @@ const CreateProduct = () => {
 
     return (
         <div className="w-full flex flex-col lg:flex-row gap-6 px-4">
-            {/* Form Section */}
+            
             <form onSubmit={handleSubmit} className="w-full lg:w-1/2 space-y-3">
                 <h1 className="text-3xl mb-3">Create Product</h1>
                 <fieldset className="bg-base-200 border rounded-lg p-6 space-y-4">
@@ -106,7 +107,6 @@ const CreateProduct = () => {
                             <option key={idx}>{b}</option>
                         ))}
                     </select>
-
 
                     <input type="number" className="input w-full" value={price} onChange={(e) => setPrice(e.target.value)} placeholder="Price" />
                     <input type="number" className="input w-full" value={countInStock} onChange={(e) => setCountInStock(e.target.value)} placeholder="Count In Stock" />
@@ -144,18 +144,18 @@ const CreateProduct = () => {
                             <option key={idx}>{os}</option>
                         ))}
                     </select>
+
                     <textarea
                         className="textarea w-full"
                         value={description}
                         onChange={(e) => setDescription(e.target.value)}
                         placeholder="Enter each description point on a new line"
-
                     />
                     <button type="submit" className="btn btn-primary w-full">Create Product</button>
                 </fieldset>
             </form>
 
-            {/* Preview Section */}
+           
             <div className="w-full lg:w-1/2">
                 <h2 className="text-2xl mb-4">Product Preview</h2>
                 <div className="border rounded-lg p-6 bg-base-100 shadow-md space-y-3">

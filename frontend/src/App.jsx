@@ -5,6 +5,8 @@ import Login from './Components/Login';
 import AllProducts from './Components/AllProducts';
 import NotFound from './Components/NotFound';
 import CreateProduct from './Components/Admin/createProduct';
+import ProductPage from './Components/ProductPage';
+
 
 
 const App = () => {
@@ -16,6 +18,7 @@ const App = () => {
             <Route path='/' element={<Body />}>
               <Route path="" element={<AllProducts />} />
               <Route path="login" element={<Login />} />
+              <Route path="/product/:id" element={<ProductPage />} />
               <Route path="createProduct" element={<CreateProduct />} />
               <Route path="*" element={<NotFound />} />
             </Route>
