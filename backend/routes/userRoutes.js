@@ -8,10 +8,13 @@ import {
   addToWishList,
   removeFromWishList,
   getOrders,
+  getUserSummary,
 } from "../controllers/userController.js";
 import userAuth from "../middlewares/authMiddleware.js";
 
 const router = express.Router();
+
+router.get("/",userAuth,getUserSummary)
 
 router.post("/register", registerUser);
 router.post("/login", loginUser);

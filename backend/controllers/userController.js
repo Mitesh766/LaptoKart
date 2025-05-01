@@ -98,6 +98,13 @@ export const registerUser = asyncHandler(async (req, res) => {
 });
 
 export const getProfile = asyncHandler(async (req, res) => {
+  res.status(200).json({
+    message: "Data fetched successfully",
+    data: req.user,
+  });
+});
+
+export const getUserSummary = asyncHandler(async (req, res) => {
   const user = await User.findById(req.user._id).select("name email isAdmin cart wishlist orders");
 
   if (!user) {
@@ -116,7 +123,6 @@ export const getProfile = asyncHandler(async (req, res) => {
     },
   });
 });
-
 
 export const updateProfile = asyncHandler(async (req, res) => {
   if (!req.body || !req.body.name || !req.body.email || !req.body.address) {
