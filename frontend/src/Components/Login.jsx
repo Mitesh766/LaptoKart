@@ -23,7 +23,7 @@ const Login = () => {
     }
 
     try {
-      const resp = await axios.post(`${USERS_URL}/login`, {
+       await axios.post(`${USERS_URL}/login`, {
         email: email.trim(),
         password: password.trim()
       }, {

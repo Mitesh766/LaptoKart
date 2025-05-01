@@ -41,9 +41,12 @@ export const loginUser = asyncHandler(async (req, res) => {
   res.status(200).json({
     message: "User logged in successfully",
     data: {
-      _id: user._id,
       name: user.name,
       email: user.email,
+      isAdmin: user.isAdmin,
+      cartCount: user.cart.length,
+      wishlistCount: user.wishlist.length,
+      orderCount: user.orders.length,
     },
   });
 });
@@ -90,9 +93,12 @@ export const registerUser = asyncHandler(async (req, res) => {
   res.status(201).json({
     message: "User created successfully",
     data: {
-      _id: user._id,
       name: user.name,
       email: user.email,
+      isAdmin: user.isAdmin,
+      cartCount: user.cart.length,
+      wishlistCount: user.wishlist.length,
+      orderCount: user.orders.length,
     },
   });
 });
@@ -105,7 +111,9 @@ export const getProfile = asyncHandler(async (req, res) => {
 });
 
 export const getUserSummary = asyncHandler(async (req, res) => {
-  const user = await User.findById(req.user._id).select("name email isAdmin cart wishlist orders");
+  const user = await User.findById(req.user._id).select(
+    "name email isAdmin cart wishlist orders"
+  );
 
   if (!user) {
     return res.status(404).json({ message: "User not found" });
@@ -201,7 +209,9 @@ export const removeFromWishList = asyncHandler(async (req, res) => {
     res.status(404);
     throw new Error("No such product in wishlist");
   }
-  user.wishlist=user.wishlist.filter((item) => item.productId.toString() !== productId);
+  user.wishlist = user.wishlist.filter(
+    (item) => item.productId.toString() !== productId
+  );
   await user.save();
   res.status(200).json({
     message: "Product successfully removed from wishlist",
