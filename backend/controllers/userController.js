@@ -98,11 +98,25 @@ export const registerUser = asyncHandler(async (req, res) => {
 });
 
 export const getProfile = asyncHandler(async (req, res) => {
+  const user = await User.findById(req.user._id).select("name email isAdmin cart wishlist orders");
+
+  if (!user) {
+    return res.status(404).json({ message: "User not found" });
+  }
+
   res.status(200).json({
-    message: "Data fetched successfully",
-    data: req.user,
+    message: "User summary fetched successfully",
+    data: {
+      name: user.name,
+      email: user.email,
+      isAdmin: user.isAdmin,
+      cartCount: user.cart.length,
+      wishlistCount: user.wishlist.length,
+      orderCount: user.orders.length,
+    },
   });
 });
+
 
 export const updateProfile = asyncHandler(async (req, res) => {
   if (!req.body || !req.body.name || !req.body.email || !req.body.address) {

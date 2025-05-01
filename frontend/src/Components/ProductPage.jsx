@@ -1,11 +1,12 @@
 import React, { useEffect, useState } from 'react';
 import { useParams } from 'react-router-dom';
 import axios from 'axios';
-import { PRODUCTS_URL } from '../utils/constants';
+import { CART_URL, PRODUCTS_URL } from '../utils/constants';
 
 const ProductPage = () => {
   const { id } = useParams();
   const [product, setProduct] = useState(null);
+  const [inCart, setInCart] = useState(false);
 
   const fetchProduct = async () => {
     const res = await axios.get(`${PRODUCTS_URL}/${id}`);
@@ -17,7 +18,7 @@ const ProductPage = () => {
   }, [id]);
 
   const addToCart = async () => {
-    await axios.post('/api/users/cart', { productId: id, quantity: 1 }, { withCredentials: true });
+    await axios.post(`${CART_URL}/${id}`, { productId: id, quantity: 1 }, { withCredentials: true });
     alert('Added to cart');
   };
 
@@ -26,11 +27,15 @@ const ProductPage = () => {
     alert('Added to wishlist');
   };
 
+  const removeFromCart=async()=>{
+    
+  }
+
   if (!product) return <p>Loading...</p>;
 
   return (
     <div className="max-w-6xl mx-auto p-6 grid md:grid-cols-2 gap-10">
-      {/* Images */}
+
       <div className="w-full h-120 bg-gray-200 rounded-xl overflow-hidden flex items-center justify-center mt-4">
         <img
           src={Array.isArray(product.image) ? product.image[0] : product.image}
@@ -39,15 +44,15 @@ const ProductPage = () => {
         />
       </div>
 
-      {/* Info */}
+
       <div className="space-y-6">
         <h1 className="text-4xl font-bold text-white">{product.name}</h1>
         <p className="text-slate-300">{product.category}</p>
         <p className="text-xl font-semibold text-emerald-400">
-          ₹{product.price.toLocaleString()}
+          ₹{product.price.toLocaleString("en-IN")}
         </p>
 
-        {/* Specs */}
+
         <p className="text-slate-400"><strong>Processor:</strong> {product.processor}</p>
         <p className="text-slate-400"><strong>RAM:</strong> {product.ram}</p>
         <p className="text-slate-400"><strong>Storage:</strong> {product.storage}</p>
@@ -55,13 +60,13 @@ const ProductPage = () => {
         <p className="text-slate-400"><strong>OS:</strong> {product.operatingSystem}</p>
         <p className="text-slate-400"><strong>Stock:</strong> {product.countInStock > 0 ? product.countInStock : "Out of stock"}</p>
 
-        {/* Buttons */}
+
         <div className="flex gap-6 mt-6">
           <button
-            onClick={addToCart}
+            onClick={!inCart? addToCart:removeFromCart}
             className="bg-blue-600 text-white px-6 py-3 rounded-xl hover:bg-blue-700"
           >
-            Add to Cart
+            {!inCart ? "Add to Cart" : "Remove from Cart"}
           </button>
           <button
             onClick={addToWishlist}
@@ -72,7 +77,7 @@ const ProductPage = () => {
         </div>
       </div>
 
-      {/* Product Highlights */}
+
       {product.description && product.description.length > 0 && (
         <div className="mt-12 bg-slate-800 p-6 rounded-xl shadow-lg">
           <h2 className="text-2xl font-semibold text-white mb-4">Product Highlights</h2>

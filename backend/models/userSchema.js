@@ -1,6 +1,44 @@
 import mongoose from "mongoose";
 import jwt from "jsonwebtoken";
 
+
+const cartItemSchema = new mongoose.Schema(
+  {
+    productId: {
+      type: mongoose.Schema.Types.ObjectId,
+      ref: "Product",
+      required: true,
+      validate: {
+        validator: v => mongoose.Types.ObjectId.isValid(v),
+        message: "Invalid Product ID",
+      },
+    },
+    quantity: {
+      type: Number,
+      required: true,
+      min: 1,
+    },
+  },
+  { _id: false }
+);
+
+
+const wishlistItemSchema = new mongoose.Schema(
+  {
+    productId: {
+      type: mongoose.Schema.Types.ObjectId,
+      ref: "Product",
+      required: true,
+      validate: {
+        validator: v => mongoose.Types.ObjectId.isValid(v),
+        message: "Invalid Product ID",
+      },
+    },
+  },
+  { _id: false }
+);
+
+
 const userSchema = new mongoose.Schema(
   {
     name: {
@@ -25,62 +63,12 @@ const userSchema = new mongoose.Schema(
     },
     orders: [
       {
-        productId: {
-          type: mongoose.Schema.Types.ObjectId,
-          ref: "Order",
-          required: true,
-          validate: {
-            validator: function (v) {
-              return mongoose.Types.ObjectId.isValid(v);
-            },
-            message: "Invalid Order ID",
-          },
-        },
-        quantity: {
-          type: Number,
-          required: true,
-        },
+        type: mongoose.Schema.Types.ObjectId,
+        ref: "Order",
       },
     ],
-    wishlist: [
-      {
-        productId: {
-          type: mongoose.Schema.Types.ObjectId,
-          ref: "Product",
-          required: true,
-          validate: {
-            validator: function (v) {
-              return mongoose.Types.ObjectId.isValid(v);
-            },
-            message: "Invalid Product ID",
-          },
-        },
-        quantity: {
-          type: Number,
-          default: 1,
-        },
-      },
-    ],
-    cart: [
-      {
-        productId: {
-          type: mongoose.Schema.Types.ObjectId,
-          ref: "Product",
-          required: true,
-          validate: {
-            validator: function (v) {
-              return mongoose.Types.ObjectId.isValid(v);
-            },
-            message: "Invalid Product ID",
-          },
-        },
-        quantity: {
-          type: Number,
-          required: true,
-          min: 1,
-        },
-      },
-    ],
+    wishlist: [wishlistItemSchema],
+    cart: [cartItemSchema],
     address: {
       street: { type: String },
       city: { type: String },
@@ -91,6 +79,7 @@ const userSchema = new mongoose.Schema(
   },
   { timestamps: true }
 );
+
 
 userSchema.methods.generateAuthToken = function () {
   const token = jwt.sign(

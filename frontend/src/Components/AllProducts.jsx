@@ -9,7 +9,7 @@ const AllProducts = () => {
   const fetchProducts = async () => {
     try {
       const resp = await axios.get(PRODUCTS_URL, { withCredentials: true });
-      setProducts(resp.data.data); // assuming data comes in { data: [...] }
+      setProducts(resp.data.data); 
     } catch (err) {
       console.error('Failed to fetch products:', err);
     }

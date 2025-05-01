@@ -6,7 +6,7 @@ const ProductCard = ({ product }) => {
     <Link to={`/product/${product._id}`} className="block">
       <div className="bg-white rounded-2xl shadow-md hover:shadow-xl transition-all duration-300 p-5 w-full max-w-sm mx-auto border border-gray-200">
         
-        {/* Product Image */}
+       
         <div className="w-full h-52 bg-gray-100 rounded-xl overflow-hidden flex items-center justify-center mb-4">
           {product.image ? (
             <img
@@ -19,14 +19,14 @@ const ProductCard = ({ product }) => {
           )}
         </div>
 
-        {/* Product Info */}
+       
         <h2 className="text-xl font-semibold text-gray-800 mb-1">{product.name}</h2>
         <p className="text-sm text-gray-500 mb-2">{product.brand}</p>
 
-        {/* Price */}
+        
         <p className="text-lg font-bold text-green-600 mb-2">₹{product.price.toLocaleString("en-IN")}</p>
 
-        {/* Tags */}
+        
         <div className="flex flex-wrap gap-2 mb-3">
           <span className="text-xs bg-blue-100 text-blue-800 font-medium px-2.5 py-0.5 rounded-full">
             {product.category}
@@ -36,7 +36,7 @@ const ProductCard = ({ product }) => {
           </span>
         </div>
 
-        {/* Specs */}
+      
         <ul className="text-sm text-gray-600 space-y-1">
           <li><strong>Processor:</strong> {product.processor}</li>
           <li><strong>RAM:</strong> {product.ram}</li>
