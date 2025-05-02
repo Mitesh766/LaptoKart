@@ -3,7 +3,7 @@ import { USERS_URL } from '../utils/constants';
 import axios from 'axios';
 import { useNavigate } from 'react-router-dom';
 import { useDispatch } from 'react-redux';
-import { setCredentials } from '../redux/userSlice';
+import { setUserData } from '../redux/userSlice';
 import { toast } from 'react-toastify';
 import 'react-toastify/dist/ReactToastify.css';
 
@@ -23,16 +23,16 @@ const Login = () => {
     }
 
     try {
-       await axios.post(`${USERS_URL}/login`, {
+      const { data } = await axios.post(`${USERS_URL}/login`, {
         email: email.trim(),
         password: password.trim()
       }, {
         withCredentials: true
       });
 
-      dispatch(setCredentials(resp.data.data));
+      dispatch(setUserData(data.data));
       toast.success("Login successful!");
-      setTimeout(() => navigate("/"), 1500);
+      navigate("/")
     }
     catch (err) {
       toast.error(err.response?.data?.message || "Login failed");
@@ -47,15 +47,15 @@ const Login = () => {
     }
 
     try {
-      const resp = await axios.post(`${USERS_URL}/register`, {
+      const { data } = await axios.post(`${USERS_URL}/register`, {
         email: email.trim(),
         name: username.trim(),
         password: password.trim()
       }, { withCredentials: true });
 
-      dispatch(setCredentials(resp.data.data));
+      dispatch(setUserData(data.data));
       toast.success("Account created successfully!");
-      setTimeout(() => navigate("/"), 1500);
+      navigate("/")
     }
     catch (err) {
       toast.error(err.response?.data?.message || "Signup failed");

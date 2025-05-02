@@ -2,6 +2,7 @@ import React, { useEffect, useState } from 'react';
 import ProductCard from './ProductCard';
 import axios from 'axios';
 import { PRODUCTS_URL } from '../utils/constants';
+import useUserSummary from '../hooks/useUserSummary';
 
 const AllProducts = () => {
   const [products, setProducts] = useState([]);
@@ -18,6 +19,8 @@ const AllProducts = () => {
   useEffect(() => {
     fetchProducts();
   }, []);
+
+  useUserSummary();
 
   return (
     <div className="p-6 grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-6">

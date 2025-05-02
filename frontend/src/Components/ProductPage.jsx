@@ -18,7 +18,7 @@ const ProductPage = () => {
   }, [id]);
 
   const addToCart = async () => {
-    await axios.post(`${CART_URL}/${id}`, { productId: id, quantity: 1 }, { withCredentials: true });
+    await axios.post(`${CART_URL}/${id}`, { productId: id }, { withCredentials: true });
     alert('Added to cart');
   };
 
@@ -27,8 +27,8 @@ const ProductPage = () => {
     alert('Added to wishlist');
   };
 
-  const removeFromCart=async()=>{
-    
+  const removeFromCart = async () => {
+
   }
 
   if (!product) return <p>Loading...</p>;
@@ -63,7 +63,7 @@ const ProductPage = () => {
 
         <div className="flex gap-6 mt-6">
           <button
-            onClick={!inCart? addToCart:removeFromCart}
+            onClick={!inCart ? addToCart : removeFromCart}
             className="bg-blue-600 text-white px-6 py-3 rounded-xl hover:bg-blue-700"
           >
             {!inCart ? "Add to Cart" : "Remove from Cart"}
