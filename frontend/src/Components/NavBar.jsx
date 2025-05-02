@@ -5,8 +5,10 @@ import { useLocation, Link } from 'react-router-dom';
 
 const NavBar = () => {
   const userInfo = useSelector((store) => store.user.userInfo);
+  const cartCount = useSelector((store) => store.cart.cartCount);
+  const wishlistCount = useSelector((store) => store.wishlist.wishlistCount);
   const location = useLocation();
-  
+
   const hideIcons = !userInfo || location.pathname === "/login";
 
   return (
@@ -37,7 +39,7 @@ const NavBar = () => {
           <Link to="/wishlist" className="relative text-white hover:text-blue-400">
             <FaRegHeart size={20} />
             <span className="absolute -top-2 -right-2 text-xs bg-red-600 text-white px-1.5 rounded-full">
-              {userInfo?.wishlistCount || 0} {/* Display Wishlist Count */}
+              {wishlistCount || 0} {/* Display Wishlist Count */}
             </span>
           </Link>
 
@@ -45,7 +47,7 @@ const NavBar = () => {
           <Link to="/cart" className="relative text-white hover:text-blue-400">
             <FaShoppingCart size={20} />
             <span className="absolute -top-2 -right-2 text-xs bg-red-600 text-white px-1.5 rounded-full">
-              {userInfo?.cartCount || 0} {/* Display Cart Count */}
+              {cartCount || 0} {/* Display Cart Count */}
             </span>
           </Link>
 

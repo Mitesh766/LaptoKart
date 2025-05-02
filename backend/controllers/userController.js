@@ -110,9 +110,9 @@ export const getProfile = asyncHandler(async (req, res) => {
   });
 });
 
-export const getUserSummary = asyncHandler(async (req, res) => {
+export const getUserData = asyncHandler(async (req, res) => {
   const user = await User.findById(req.user._id).select(
-    "name email isAdmin cart wishlist orders"
+    "name email isAdmin cart wishlist  address"
   );
 
   if (!user) {
@@ -122,12 +122,14 @@ export const getUserSummary = asyncHandler(async (req, res) => {
   res.status(200).json({
     message: "User summary fetched successfully",
     data: {
-      name: user.name,
-      email: user.email,
-      isAdmin: user.isAdmin,
+      userData: {
+        name: user.name,
+        email: user.email,
+        isAdmin: user.isAdmin,
+        address: user.address,
+      },
       cartCount: user.cart.length,
       wishlistCount: user.wishlist.length,
-      orderCount: user.orders.length,
     },
   });
 });
