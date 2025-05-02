@@ -3,10 +3,11 @@ import { Outlet } from 'react-router-dom';
 import NavBar from './NavBar.jsx';
 import Footer from './Footer.jsx';
 import { ToastContainer } from 'react-toastify';
+import useUserData from '../hooks/useUserData.js';
 
 
 const Body = () => {
-  
+  useUserData();
   return (
     <div className="bg-[#0F172A] text-white min-h-screen">
       <NavBar />

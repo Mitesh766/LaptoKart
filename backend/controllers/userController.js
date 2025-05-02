@@ -39,14 +39,16 @@ export const loginUser = asyncHandler(async (req, res) => {
   });
 
   res.status(200).json({
-    message: "User logged in successfully",
+    message: "User logged in  successfully",
     data: {
-      name: user.name,
-      email: user.email,
-      isAdmin: user.isAdmin,
+      userData: {
+        name: user.name,
+        email: user.email,
+        isAdmin: user.isAdmin,
+        address: user.address,
+      },
       cartCount: user.cart.length,
       wishlistCount: user.wishlist.length,
-      orderCount: user.orders.length,
     },
   });
 });
@@ -91,14 +93,16 @@ export const registerUser = asyncHandler(async (req, res) => {
   await user.save();
 
   res.status(201).json({
-    message: "User created successfully",
+    message: "User registered successfully",
     data: {
-      name: user.name,
-      email: user.email,
-      isAdmin: user.isAdmin,
+      userData: {
+        name: user.name,
+        email: user.email,
+        isAdmin: user.isAdmin,
+        address: user.address,
+      },
       cartCount: user.cart.length,
       wishlistCount: user.wishlist.length,
-      orderCount: user.orders.length,
     },
   });
 });
@@ -120,7 +124,7 @@ export const getUserData = asyncHandler(async (req, res) => {
   }
 
   res.status(200).json({
-    message: "User summary fetched successfully",
+    message: "User data fetched successfully",
     data: {
       userData: {
         name: user.name,

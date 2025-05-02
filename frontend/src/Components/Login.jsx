@@ -1,11 +1,13 @@
-import React, { useState } from 'react';
+import React, { useEffect, useState } from 'react';
 import { USERS_URL } from '../utils/constants';
 import axios from 'axios';
 import { useNavigate } from 'react-router-dom';
-import { useDispatch } from 'react-redux';
+import { useDispatch, useSelector } from 'react-redux';
 import { setUserData } from '../redux/userSlice';
 import { toast } from 'react-toastify';
 import 'react-toastify/dist/ReactToastify.css';
+import { setCartCount } from '../redux/cartSlice';
+import { setWishlistCount } from '../redux/wishlistSlice';
 
 const Login = () => {
   const [isSignIn, setIsSignIn] = useState(true);
@@ -14,6 +16,13 @@ const Login = () => {
   const [username, setUserName] = useState("");
   const navigate = useNavigate();
   const dispatch = useDispatch();
+  const userData = useSelector(store => store.user.userInfo);
+
+  useEffect(() => {
+    if (userData) {
+      navigate("/", { replace: true });
+    }
+  }, [userData, navigate]);
 
   const handleLogin = async (e) => {
     e.preventDefault();
@@ -30,7 +39,9 @@ const Login = () => {
         withCredentials: true
       });
 
-      dispatch(setUserData(data.data));
+      dispatch(setUserData(data.data.userData));
+      dispatch(setCartCount(data.data.cartCount));
+      dispatch(setWishlistCount(data.data.wishlistCount));
       toast.success("Login successful!");
       navigate("/")
     }

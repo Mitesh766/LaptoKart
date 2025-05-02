@@ -2,7 +2,7 @@ import { createSlice } from "@reduxjs/toolkit";
 
 const initialState = {
   userInfo: null,
-  summaryFetched: false,  
+  isUserFetched: false,
 };
 
 export const userSlice = createSlice({
@@ -11,11 +11,12 @@ export const userSlice = createSlice({
   reducers: {
     setUserData: (state, action) => {
       state.userInfo = action.payload;
-      state.summaryFetched = !!action.payload;  
+      state.isUserFetched = !!action.payload;
+      
     },
     clearUserData: (state) => {
       state.userInfo = null;
-      state.summaryFetched = false;
+      state.isUserFetched = false;
     },
   },
 });
