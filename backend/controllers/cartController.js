@@ -90,10 +90,7 @@ export const removeFromCart = asyncHandler(async (req, res) => {
   }
 
   const user = await User.findById(req.user._id);
-  if (!user) {
-    res.status(404);
-    throw new Error("User not found");
-  }
+
 
   user.cart = user.cart.filter(
     (item) => item.productId.toString() !== productId
@@ -101,7 +98,10 @@ export const removeFromCart = asyncHandler(async (req, res) => {
 
   await user.save();
 
+  const cartData = await getCartData(user._id);
+
   res.status(200).json({
     message: "Item successfully removed from cart",
+    data: cartData,
   });
 });

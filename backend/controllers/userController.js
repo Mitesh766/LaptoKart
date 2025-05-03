@@ -182,61 +182,6 @@ export const updateProfile = asyncHandler(async (req, res) => {
   });
 });
 
-export const getWishList = asyncHandler(async (req, res) => {
-  const user = await User.findById(req.user._id)
-    .populate("wishlist.productId")
-    .select("wishlist");
-  res.status(200).json({
-    message: "Wishlist fetched successfully",
-    data: user.wishlist,
-  });
-});
 
-export const addToWishList = asyncHandler(async (req, res) => {
-  const { productId } = req.params;
-  const productExists = await Product.findById(productId);
-  if (!productExists) {
-    res.status(404);
-    throw new Error("No such product exists");
-  }
-  const user = await User.findById(req.user._id);
 
-  if (user.wishlist.some((item) => productId === item.productId.toString())) {
-    res.status(400);
-    throw new Error("Product is already in your wishlist");
-  }
 
-  user.wishlist.push({ productId });
-  await user.save();
-
-  res.status(201).json({
-    message: "Product successfully added to wishlist",
-  });
-});
-
-export const removeFromWishList = asyncHandler(async (req, res) => {
-  const { productId } = req.params;
-  const user = await User.findById(req.user._id).select("wishlist");
-
-  if (!user.wishlist.some((item) => item.productId.toString() === productId)) {
-    res.status(404);
-    throw new Error("No such product in wishlist");
-  }
-  user.wishlist = user.wishlist.filter(
-    (item) => item.productId.toString() !== productId
-  );
-  await user.save();
-  res.status(200).json({
-    message: "Product successfully removed from wishlist",
-  });
-});
-
-export const getOrders = asyncHandler(async (req, res) => {
-  const user = await User.findById(req.user._id)
-    .populate("orders.productId")
-    .select("orders");
-  res.status(200).json({
-    message: "Orders fetched successfully",
-    data: user.orders,
-  });
-});

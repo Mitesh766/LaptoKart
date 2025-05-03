@@ -36,11 +36,13 @@ const ProductPage = () => {
   };
 
   const removeFromCart = async () => {
-
+    const { data } = await axios.delete(`${CART_URL}/${id}`, { productId: id }, { withCredentials: true });
+    dispatch(setCartItems(data.data.cart))
+    dispatch(setTotalCartAmount(data.data.totalCartValue))
   }
 
   const inCart = useSelector((store) => isProductInCart(store.cart.cartItems, id));
-  
+
 
 
 
