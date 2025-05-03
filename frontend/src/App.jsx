@@ -7,11 +7,13 @@ import NotFound from './Components/NotFound';
 import CreateProduct from './Components/Admin/createProduct';
 import ProductPage from './Components/ProductPage';
 
+import AdminRoute from './Components/Admin/AdminRoute';
+
 
 
 
 const App = () => {
- 
+
   return (
     <>
       <BrowserRouter>
@@ -20,8 +22,13 @@ const App = () => {
             <Route path='/' element={<Body />}>
               <Route path="" element={<AllProducts />} />
               <Route path="login" element={<Login />} />
-              <Route path="/product/:id" element={<ProductPage />} />
-              <Route path="createProduct" element={<CreateProduct />} />
+              <Route path="product/:id" element={<ProductPage />} />
+
+              <Route path="admin" element={<AdminRoute />}>
+                <Route path="create-product" element={<CreateProduct />} />
+
+              </Route>
+
               <Route path="*" element={<NotFound />} />
             </Route>
           </Routes>
