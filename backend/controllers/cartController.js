@@ -1,37 +1,23 @@
 import asyncHandler from "../utils/asyncHandler.js";
 import User from "../models/userSchema.js";
 
+import { getCartData } from "../utils/cartUtils.js";
+
 export const getCart = asyncHandler(async (req, res) => {
-  const user = await User.findById(req.user._id).populate("cart.productId");
-  if (!user) {
-    res.status(404);
-    throw new Error("User not found");
-  }
-  user.cart.forEach((item) => {
-    item.pricePerItem = item.productId.price;
-    item.totalItemPrice = item.quantity * item.productId.price;
-  });
-
-  const totalCartValue = user.cart.reduce(
-    (acc, item) => acc + item.totalItemPrice,
-    0
-  );
-
+  const cartData = await getCartData(req.user._id);
   res.status(200).json({
     message: "Cart details fetched successfully",
-    data: {
-      cart: user.cart,
-      totalCartValue,
-    },
+    data: cartData,
   });
 });
 
 export const addToCart = asyncHandler(async (req, res) => {
   const { productId } = req.params;
   if (!productId) {
-    res.status(404);
+    res.status(400);
     throw new Error("No product Id found");
   }
+
   const user = await User.findById(req.user._id);
   if (!user) {
     res.status(404);
@@ -43,17 +29,20 @@ export const addToCart = asyncHandler(async (req, res) => {
   );
 
   if (existingItemIndex > -1) {
-    res.status(400).json({
-      message: "Product already exists in the cart",
-    });
+    res.status(400);
+    throw new Error("Product already exists in the cart");
   }
 
   user.cart.push({ productId, quantity: 1 });
   await user.save();
-  res.status(201).json({
-    message: "Product successfully added to cart",
+
+  const cartData = await getCartData(user._id);
+  res.status(200).json({
+    message: "Product added to cart",
+    data: cartData,
   });
 });
+
 
 export const updateCart = asyncHandler(async (req, res) => {
   const user = await User.findById(req.user._id);
@@ -96,7 +85,7 @@ export const updateCart = asyncHandler(async (req, res) => {
 export const removeFromCart = asyncHandler(async (req, res) => {
   const { productId } = req.params;
   if (!productId) {
-    res.status(400); 
+    res.status(400);
     throw new Error("Please provide a product Id");
   }
 

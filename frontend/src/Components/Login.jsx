@@ -64,7 +64,9 @@ const Login = () => {
         password: password.trim()
       }, { withCredentials: true });
 
-      dispatch(setUserData(data.data));
+      dispatch(setUserData(data.data.userData));
+      dispatch(setCartCount(data.data.cartCount));
+      dispatch(setWishlistCount(data.data.wishlistCount));
       toast.success("Account created successfully!");
       navigate("/")
     }

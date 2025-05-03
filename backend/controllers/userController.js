@@ -6,6 +6,8 @@ import validator from "validator";
 import Order from "../models/orderSchema.js";
 
 import { validateUserData } from "../utils/validate.js";
+import { getCartData } from "../utils/cartUtils.js";
+import { getWishlistData } from "../utils/wishListUtils.js";
 
 export const loginUser = asyncHandler(async (req, res) => {
   if (!req?.body || !req?.body?.email || !req?.body?.password) {
@@ -38,6 +40,9 @@ export const loginUser = asyncHandler(async (req, res) => {
     maxAge: 1000 * 60 * 60 * 24 * 7,
   });
 
+  const cartData = await getCartData(user._id);
+  const wishlistData =await getWishlistData(user._id);
+
   res.status(200).json({
     message: "User logged in  successfully",
     data: {
@@ -47,8 +52,8 @@ export const loginUser = asyncHandler(async (req, res) => {
         isAdmin: user.isAdmin,
         address: user.address,
       },
-      cartCount: user.cart.length,
-      wishlistCount: user.wishlist.length,
+      cartData,
+      wishlistData,
     },
   });
 });
@@ -93,7 +98,7 @@ export const registerUser = asyncHandler(async (req, res) => {
   await user.save();
 
   res.status(201).json({
-    message: "User registered successfully",
+    message: "User created successfully",
     data: {
       userData: {
         name: user.name,
@@ -101,8 +106,8 @@ export const registerUser = asyncHandler(async (req, res) => {
         isAdmin: user.isAdmin,
         address: user.address,
       },
-      cartCount: user.cart.length,
-      wishlistCount: user.wishlist.length,
+      cartData: [],
+      wishlistData: [],
     },
   });
 });
@@ -115,25 +120,27 @@ export const getProfile = asyncHandler(async (req, res) => {
 });
 
 export const getUserData = asyncHandler(async (req, res) => {
-  const user = await User.findById(req.user._id).select(
-    "name email isAdmin cart wishlist  address"
-  );
+  const email= req.user?.email;
+  const user = await User.findOne({ email });
 
   if (!user) {
     return res.status(404).json({ message: "User not found" });
   }
-
+ 
+  const cartData =await getCartData(user._id);
+  const wishlistData =await  getWishlistData(user._id);
   res.status(200).json({
-    message: "User data fetched successfully",
+    message: "User logged in  successfully",
     data: {
       userData: {
+        _id: user._id,
         name: user.name,
         email: user.email,
         isAdmin: user.isAdmin,
         address: user.address,
       },
-      cartCount: user.cart.length,
-      wishlistCount: user.wishlist.length,
+      cartData,
+      wishlistData,
     },
   });
 });
