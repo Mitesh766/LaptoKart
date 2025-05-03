@@ -1,22 +1,31 @@
 import React, { useEffect, useState } from 'react';
-import { useParams } from 'react-router-dom';
+import { useNavigate, useParams } from 'react-router-dom';
 import axios from 'axios';
-import { CART_URL, PRODUCTS_URL } from '../utils/constants';
-import useCartItems from '../hooks/useCartItems';
+import { CART_URL, PRODUCTS_URL, WISHLIST_URL } from '../utils/constants';
+
 import { useDispatch, useSelector } from 'react-redux';
-import { isProductInCart, setCartItems, setTotalCartAmount } from '../redux/cartSlice';
+
+import { toast } from 'react-toastify';
+
+import { addToCart, addToWishlist, removeFromCart, removeFromWishlist } from '../services/userActions';
 
 const ProductPage = () => {
   const { id } = useParams();
   const [product, setProduct] = useState(null);
+  const navigate = useNavigate()
 
   const dispatch = useDispatch()
 
-  useCartItems();
 
   const fetchProduct = async () => {
-    const res = await axios.get(`${PRODUCTS_URL}/${id}`);
-    setProduct(res.data.data);
+    try {
+      const res = await axios.get(`${PRODUCTS_URL}/${id}`);
+      setProduct(res.data.data);
+    }
+    catch (err) {
+      toast.error(err?.response?.data?.message)
+    }
+
   };
 
 
@@ -24,28 +33,19 @@ const ProductPage = () => {
     fetchProduct();
   }, [id]);
 
-  const addToCart = async () => {
-    const { data } = await axios.post(`${CART_URL}/${id}`, { productId: id }, { withCredentials: true });
-    dispatch(setCartItems(data.data.cart))
-    dispatch(setTotalCartAmount(data.data.totalCartValue))
+
+
+
+  const cartData = useSelector((store) => store.cart.cartItems);
+  const wishlistData = useSelector((store) => store.wishlist.wishlistItems);
+
+  const inCart = () => {
+    return cartData?.some((item) => item.productId._id.toString() == id.toString()) || false;
   };
 
-  const addToWishlist = async () => {
-    await axios.post('/api/users/wishlist', { productId: id }, { withCredentials: true });
-    alert('Added to wishlist');
+  const inWishlist = () => {
+    return wishlistData?.some((item) => item.productId._id.toString() == id.toString()) || false;
   };
-
-  const removeFromCart = async () => {
-    const { data } = await axios.delete(`${CART_URL}/${id}`, { productId: id }, { withCredentials: true });
-    dispatch(setCartItems(data.data.cart))
-    dispatch(setTotalCartAmount(data.data.totalCartValue))
-  }
-
-  const inCart = useSelector((store) => isProductInCart(store.cart.cartItems, id));
-
-
-
-
 
   if (!product) return <p>Loading...</p>;
 
@@ -79,16 +79,16 @@ const ProductPage = () => {
 
         <div className="flex gap-6 mt-6">
           <button
-            onClick={!inCart ? addToCart : removeFromCart}
+            onClick={!inCart() ? ()=>addToCart(id, dispatch, navigate) : ()=>removeFromCart(id, dispatch, navigate)}
             className="bg-blue-600 text-white px-6 py-3 rounded-xl hover:bg-blue-700"
           >
-            {!inCart ? "Add to Cart" : "Remove from Cart"}
+            {!inCart() ? "Add to Cart" : "Remove from Cart"}
           </button>
           <button
-            onClick={addToWishlist}
+            onClick={!inWishlist() ? ()=>addToWishlist(id, dispatch, navigate) : ()=>removeFromWishlist(id, dispatch, navigate)}
             className="bg-pink-500 text-white px-6 py-3 rounded-xl hover:bg-pink-600"
           >
-            Add to Wishlist
+            {!inWishlist() ? "Add to Wishlist" : "Remove from Wishlist"}
           </button>
         </div>
       </div>

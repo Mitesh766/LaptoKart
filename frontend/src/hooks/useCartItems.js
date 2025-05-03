@@ -20,7 +20,7 @@ const useCartItems = () => {
         });
 
 
-        console.log(resp)
+        
         dispatch(setCartItems(resp.data.cart));
         dispatch(setTotalCartAmount(resp.data.totalCartValue));
         dispatch(setCartCount(resp.data.cart.length));

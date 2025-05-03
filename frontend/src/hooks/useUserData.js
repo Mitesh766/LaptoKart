@@ -5,8 +5,7 @@ import { setUserData } from "../redux/userSlice.js";
 import { USERS_URL } from "../utils/constants.js";
 import { setCartItems } from "../redux/cartSlice.js";
 
-import {setWishlistItems} from"../redux/wishlistSlice.js"
-
+import { setWishlistItems } from "../redux/wishlistSlice.js";
 
 const useUserData = () => {
   const dispatch = useDispatch();
@@ -17,20 +16,15 @@ const useUserData = () => {
       const { data } = await axios.get(`${USERS_URL}/`, {
         withCredentials: true,
       });
-      console.log(data)
-
-
-   
-      
-      
 
       dispatch(setUserData(data.data.userData));
-      dispatch(setWishlistItems(data.data.wishlistData.wishlist))
-      dispatch(setCartItems(data.data.cartData.cart))
-    
+      dispatch(setWishlistItems(data.data.wishlistData.wishlist));
+      dispatch(setCartItems(data.data.cartData.cart));
     } catch (err) {
       console.warn("User not logged in or fetch failed." + err);
       dispatch(setUserData(null));
+      dispatch(setCartItems([]));
+      dispatch(setWishlistItems([]))
     }
   };
 

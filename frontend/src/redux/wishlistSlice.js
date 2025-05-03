@@ -9,6 +9,7 @@ export const wishlistSlice = createSlice({
   reducers: {
     setWishlistItems: (state, action) => {
       state.wishlistItems = action.payload;
+      state.wishlistCount = action.payload.length;
     },
     setWishlistCount: (state, action) => {
       state.wishlistCount = action.payload;
@@ -16,13 +17,8 @@ export const wishlistSlice = createSlice({
   },
 });
 
-export const {setWishlistItems,setWishlistCount}= wishlistSlice.actions
+export const { setWishlistItems, setWishlistCount } = wishlistSlice.actions;
 
-export default wishlistSlice.reducer
+export default wishlistSlice.reducer;
 
 
-export const isProductInWishlist = (wishlistItems, productId) => {
-  return wishlistItems.some(
-    (item) => item.productId._id.toString() === productId.toString()
-  );
-};

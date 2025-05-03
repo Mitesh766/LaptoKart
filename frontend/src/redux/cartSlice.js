@@ -26,8 +26,4 @@ export const { setCartItems, setCartCount, setTotalCartAmount } =
 
 export default cartSlice.reducer;
 
-export const isProductInCart = (cartItems, productId) => {
-  return cartItems.some(
-    (item) => item.productId._id.toString() === productId.toString()
-  );
-};
+
