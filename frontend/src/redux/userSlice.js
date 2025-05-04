@@ -11,7 +11,7 @@ export const userSlice = createSlice({
   reducers: {
     setUserData: (state, action) => {
       state.userInfo = action.payload;
-      state.isUserFetched = !!action.payload;
+      state.isUserFetched = true;
       
     },
     clearUserData: (state) => {

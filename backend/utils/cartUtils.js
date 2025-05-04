@@ -3,11 +3,7 @@ import User from "../models/userSchema.js";
 export const getCartData = async (userId) => {
   const user = await User.findById(userId).populate("cart.productId");
 
-  if (!user) {
-    throw new Error("User not found");
-  }
-
-  // Safely transform the cart into a new array
+  
   const transformedCart = user.cart.map((item) => {
     const price = item.productId?.price || 0;
     const quantity = item.quantity;

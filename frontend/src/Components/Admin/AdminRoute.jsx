@@ -1,10 +1,10 @@
-// src/components/ProtectedAdminRoute.jsx
+// AdminRoute.jsx
 import React, { useEffect } from "react";
 import { useSelector } from "react-redux";
-import { Navigate, useLocation } from "react-router-dom";
+import { Navigate, Outlet, useLocation } from "react-router-dom";
 import { toast } from "react-toastify";
 
-const AdminRoute = ({ children }) => {
+const AdminRoute = () => {
   const user = useSelector((store) => store.user?.userInfo);
   const location = useLocation();
 
@@ -13,10 +13,6 @@ const AdminRoute = ({ children }) => {
       toast.error("Access denied: You are not an authorized admin.");
     }
   }, [user]);
-
-  if (user === null) {
-    return null;
-  }
 
   if (!user) {
     toast.error("You need to log in first.");
@@ -27,7 +23,7 @@ const AdminRoute = ({ children }) => {
     return <Navigate to="/" replace />;
   }
 
-  return children;
+  return <Outlet />; 
 };
 
 export default AdminRoute;

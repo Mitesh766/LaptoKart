@@ -16,10 +16,10 @@ const AllProducts = () => {
     }
   };
 
-  useEffect(() => {
+  
+useEffect(() => {
     fetchProducts();
   }, []);
-
   
 
   return (

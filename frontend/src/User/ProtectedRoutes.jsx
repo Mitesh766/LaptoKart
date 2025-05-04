@@ -1,18 +1,23 @@
 // ProtectedRoute.js
-import React from 'react';
-import { Navigate } from 'react-router-dom';
+import React, { useEffect } from 'react';
+import { Navigate, Outlet, useLocation } from 'react-router-dom';
 import { useSelector } from 'react-redux'; 
 import { toast } from 'react-toastify';
 
-const ProtectedRoute = ({ children }) => {
-  const user = useSelector((store) => store.user?.userInfo); 
+const ProtectedRoute = () => {
+  const user = useSelector((store) => store.user?.userInfo);
+  const location = useLocation();
+  useEffect(() => {
+    if (!user) {
+      toast.error("Please login to continue");
+    }
+  }, [user]);
 
   if (!user) {
-    toast.error("Please login to continue");
-    return <Navigate to="/login" replace/>;
+    return <Navigate to="/login" state={{ from: location }} replace />;
   }
 
-  return children; 
+  return <Outlet />; 
 };
 
 export default ProtectedRoute;

@@ -4,10 +4,20 @@ import NavBar from './NavBar.jsx';
 import Footer from './Footer.jsx';
 import { ToastContainer } from 'react-toastify';
 import useUserData from '../hooks/useUserData.js';
+import { useSelector } from 'react-redux';
 
 
 const Body = () => {
   useUserData();
+  const isUserFetched = useSelector((state) => state.user.isUserFetched);
+
+  if (!isUserFetched) {
+    return (
+      <div className="flex items-center justify-center h-screen">
+        <p className="text-xl">Loading user data...</p>
+      </div>
+    );
+  }
   return (
     <div className="bg-[#0F172A] text-white min-h-screen">
       <NavBar />

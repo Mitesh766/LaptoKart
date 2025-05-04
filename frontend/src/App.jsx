@@ -8,7 +8,7 @@ import CreateProduct from './Components/Admin/createProduct';
 import ProductPage from './Components/ProductPage';
 
 import AdminRoute from './Components/Admin/AdminRoute';
-import Wishlist from './Components/Wishlist';
+import Wishlist from './User/Wishlist';
 import ProtectedRoute from './User/ProtectedRoutes';
 
 
@@ -27,10 +27,12 @@ const App = () => {
 
               <Route path="product/:id" element={<ProductPage />} />
 
-              <Route path="wishlist" element={<ProtectedRoute element={<Wishlist />} />} />
+              <Route element={<ProtectedRoute />}>
+                <Route path="wishlist" element={<Wishlist />} />
+                
+              </Route>
               <Route path="admin" element={<AdminRoute />}>
                 <Route path="create-product" element={<CreateProduct />} />
-
               </Route>
 
               <Route path="*" element={<NotFound />} />

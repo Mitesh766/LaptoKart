@@ -27,8 +27,7 @@ const NavBar = () => {
           <li><Link to="/" className="hover:text-blue-400">Shop</Link></li>
           <li><Link to="/brands" className="hover:text-blue-400">Brands</Link></li>
           <li><Link to="/deals" className="hover:text-blue-400">Deals</Link></li>
-          <li><Link to="/wishlist" className="hover:text-blue-400">Wishlist</Link></li> {/* Added Wishlist */}
-          <li><Link to="/cart" className="hover:text-blue-400">Cart</Link></li>
+          
           <li><Link to="/profile" className="hover:text-blue-400">Profile</Link></li> {/* Added Profile */}
           <li><Link to="/login" className="hover:text-blue-400">Login</Link></li>
         </ul>

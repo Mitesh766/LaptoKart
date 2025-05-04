@@ -1,7 +1,7 @@
 import React, { useEffect, useState } from 'react';
 import { USERS_URL } from '../utils/constants';
 import axios from 'axios';
-import { useNavigate } from 'react-router-dom';
+import { useLocation, useNavigate } from 'react-router-dom';
 import { useDispatch, useSelector } from 'react-redux';
 import { setUserData } from '../redux/userSlice';
 import { toast } from 'react-toastify';
@@ -17,12 +17,15 @@ const Login = () => {
   const navigate = useNavigate();
   const dispatch = useDispatch();
   const userData = useSelector(store => store.user.userInfo);
+  const location = useLocation();
+  const from = location.state?.from?.pathname || "/";
+
 
   useEffect(() => {
     if (userData) {
       navigate("/", { replace: true });
     }
-  }, [userData, navigate]);
+  }, []);
 
   const handleLogin = async (e) => {
     e.preventDefault();
@@ -43,7 +46,7 @@ const Login = () => {
       dispatch(setCartCount(data.data.cartCount));
       dispatch(setWishlistCount(data.data.wishlistCount));
       toast.success("Login successful!");
-      navigate("/")
+      navigate(from);
     }
     catch (err) {
       toast.error(err.response?.data?.message || "Login failed");
@@ -68,7 +71,7 @@ const Login = () => {
       dispatch(setCartCount(data.data.cartCount));
       dispatch(setWishlistCount(data.data.wishlistCount));
       toast.success("Account created successfully!");
-      navigate("/")
+      navigate(from);
     }
     catch (err) {
       toast.error(err.response?.data?.message || "Signup failed");
@@ -79,9 +82,9 @@ const Login = () => {
     <div className="flex justify-center items-center min-h-[1/2] bg-gray-900 text-white px-4">
       <div className="w-full max-w-sm p-6 bg-gray-800 border border-gray-700 rounded-lg shadow">
         <form className="space-y-6" onSubmit={isSignIn ? handleLogin : handleSignUp}>
-          <h5 className="text-xl font-medium">{
-            isSignIn ? "Sign in" : "Sign Up"
-          } to our platform</h5>
+          <h5 className="text-xl font-medium">
+            {isSignIn ? "Sign in" : "Sign Up"} to our platform
+          </h5>
 
           {!isSignIn && (
             <div>
