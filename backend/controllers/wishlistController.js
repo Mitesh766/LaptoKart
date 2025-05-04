@@ -16,7 +16,7 @@ export const addToWishList = asyncHandler(async (req, res) => {
   const productExists = await Product.findById(productId);
   if (!productExists) {
     res.status(404);
-    throw new Error("No such product exists");
+    throw new Error("Product details not found");
   }
   const user = await User.findById(req.user._id);
 
@@ -41,7 +41,7 @@ export const removeFromWishList = asyncHandler(async (req, res) => {
 
   if (!user.wishlist.some((item) => item.productId.toString() === productId)) {
     res.status(404);
-    throw new Error("No such product in wishlist");
+    throw new Error("Product details not found");
   }
   user.wishlist = user.wishlist.filter(
     (item) => item.productId.toString() !== productId

@@ -12,7 +12,10 @@ const userAuth = asyncHandler(async (req, res, next) => {
   const userData = await User.findOne({ _id: _id }).select(
     "_id name email address isAdmin"
   );
-  if (!userData) throw new Error(" Please log in to continue");
+  if (!userData) {
+    res.status(404);
+    throw new Error("Invalid user");
+  }
 
   req.user = userData;
   next();

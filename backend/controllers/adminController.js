@@ -37,9 +37,9 @@ export const createProduct = asyncHandler(async (req, res) => {
   }
 
   if (typeof description === "string") {
-    description = description.split(","); // Split by comma if it's a single string
+    description = description.split(",");
   }
-  console.log(description);
+
 
   if (!req?.file?.path) {
     res.status(400);

@@ -19,11 +19,7 @@ export const addToCart = asyncHandler(async (req, res) => {
   }
 
   const user = await User.findById(req.user._id);
-  if (!user) {
-    res.status(404);
-    throw new Error("User not found");
-  }
-
+ 
   const existingItemIndex = user.cart.findIndex(
     (item) => item.productId.toString() === productId
   );
@@ -46,10 +42,7 @@ export const addToCart = asyncHandler(async (req, res) => {
 
 export const updateCart = asyncHandler(async (req, res) => {
   const user = await User.findById(req.user._id);
-  if (!user) {
-    res.status(404);
-    throw new Error("User not found");
-  }
+  
 
   const { productId } = req.params;
   const { quantity } = req.body;
