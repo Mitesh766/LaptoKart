@@ -4,12 +4,10 @@ import asyncHandler from "../utils/asyncHandler.js";
 import { getWishlistData } from "../utils/wishListUtils.js";
 
 export const getWishList = asyncHandler(async (req, res) => {
-  const user = await User.findById(req.user._id)
-    .populate("wishlist.productId")
-    .select("wishlist");
+  const wishlistData = await getWishlistData(req.user._id);
   res.status(200).json({
-    message: "Wishlist fetched successfully",
-    data: user.wishlist,
+    message: "Wishlist data fetched successfully",
+    wishlistData,
   });
 });
 
@@ -52,6 +50,6 @@ export const removeFromWishList = asyncHandler(async (req, res) => {
   const wishlistData = await getWishlistData(req.user._id);
   res.status(200).json({
     message: "Product successfully removed from wishlist",
-    wishlistData
+    wishlistData,
   });
 });
