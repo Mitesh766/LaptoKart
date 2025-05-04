@@ -12,7 +12,7 @@ const NavBar = () => {
   const hideIcons = !userInfo || location.pathname === "/login";
 
   return (
-    <nav className="bg-[#1A365D] shadow-md mb-10">
+    <nav className="bg-[#1A365D] shadow-md mb-2">
       <div className="max-w-screen-xl flex items-center justify-between mx-auto px-4 py-3">
 
         {/* Logo */}

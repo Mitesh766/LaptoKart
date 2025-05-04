@@ -8,8 +8,9 @@ import CreateProduct from './Components/Admin/createProduct';
 import ProductPage from './Components/ProductPage';
 
 import AdminRoute from './Components/Admin/AdminRoute';
-import Wishlist from './User/Wishlist';
-import ProtectedRoute from './User/ProtectedRoutes';
+import Wishlist from './Components/User/Wishlist';
+import ProtectedRoute from './Components/User/ProtectedRoutes';
+import Cart from './Components/User/Cart';
 
 
 
@@ -29,6 +30,7 @@ const App = () => {
 
               <Route element={<ProtectedRoute />}>
                 <Route path="wishlist" element={<Wishlist />} />
+                <Route path="cart" element={<Cart />} />
                 
               </Route>
               <Route path="admin" element={<AdminRoute />}>

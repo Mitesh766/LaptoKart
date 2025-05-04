@@ -1,9 +1,9 @@
 import React, { useEffect } from 'react';
 import { useDispatch, useSelector } from 'react-redux';
 import axios from 'axios';
-import { WISHLIST_URL } from '../utils/constants';
-import { setWishlistItems } from '../redux/wishlistSlice';
-import { addToCart, removeFromWishlist } from '../services/userActions';
+import { WISHLIST_URL } from '../../utils/constants';
+import { setWishlistItems } from '../../redux/wishlistSlice';
+import { addToCart, removeFromWishlist } from '../../services/userActions';
 import { Heart, ShoppingCart, Trash2 } from 'lucide-react';
 import { useNavigate } from 'react-router-dom';
 import { toast } from 'react-toastify'; // For displaying error messages
