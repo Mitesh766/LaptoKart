@@ -1,7 +1,7 @@
 import React from 'react';
 import useCartItems from '../../hooks/useCartItems';
 import { useDispatch, useSelector } from 'react-redux';
-import { removeFromCart } from '../../services/userActions';
+import { removeFromCart, handleCartQty } from '../../services/userActions.js';
 import { useNavigate } from 'react-router-dom';
 
 const Cart = () => {
@@ -9,7 +9,6 @@ const Cart = () => {
   const dispatch = useDispatch();
   const navigate = useNavigate();
   const cartData = useSelector((store) => store.cart.cartItems);
-  
   const cartTotal = useSelector((store) => store.cart.totalCartValue);
 
   return (
@@ -41,14 +40,16 @@ const Cart = () => {
                   <div className="mt-2 flex items-center gap-2">
                     <button
                       className="px-3 py-1 bg-gray-700 text-white rounded hover:bg-gray-600"
+                      onClick={async () => handleCartQty(product._id, item.quantity - 1, dispatch, navigate)}
                     >-</button>
                     <span className="font-semibold px-2 text-white">{item.quantity}</span>
                     <button
                       className="px-3 py-1 bg-gray-700 text-white rounded hover:bg-gray-600"
+                      onClick={async () => handleCartQty(product._id, item.quantity + 1, dispatch, navigate)}
                     >+</button>
                     <button
                       className="ml-auto sm:ml-4 mt-2 sm:mt-0 px-3 py-1 bg-red-600 text-white rounded hover:bg-red-500"
-                      onClick={async () =>  await removeFromCart(product._id, dispatch, navigate)}
+                      onClick={async () => await removeFromCart(product._id, dispatch, navigate)}
                     >
                       🗑 Remove
                     </button>

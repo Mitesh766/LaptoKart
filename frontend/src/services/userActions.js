@@ -64,3 +64,33 @@ export const removeFromWishlist = async (productId, dispatch, navigate) => {
     if (err?.response?.status === 401) navigate("/login");
   }
 };
+
+export const handleCartQty = async (
+  productId,
+  quantity,
+  dispatch,
+  navigate
+) => {
+  try {
+    if (quantity < 1) return;
+    if (quantity > 2) {
+      throw new Error("Max allowed quantity is 2");
+    }
+    const { data } = await axios.put(
+      `${CART_URL}/${productId}`,
+      { quantity },
+      {
+        withCredentials: true,
+      }
+    );
+    dispatch(setCartItems(data.data.cart));
+    dispatch(setTotalCartAmount(data.data.totalCartValue));
+  } catch (err) {
+    toast.error(
+      err?.response?.data?.message ||
+        err?.message ||
+        "Failed to update cart quantity"
+    );
+    if (err?.response?.status === 401) navigate("/login");
+  }
+};

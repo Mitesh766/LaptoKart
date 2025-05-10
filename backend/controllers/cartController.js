@@ -19,7 +19,7 @@ export const addToCart = asyncHandler(async (req, res) => {
   }
 
   const user = await User.findById(req.user._id);
- 
+
   const existingItemIndex = user.cart.findIndex(
     (item) => item.productId.toString() === productId
   );
@@ -39,10 +39,8 @@ export const addToCart = asyncHandler(async (req, res) => {
   });
 });
 
-
 export const updateCart = asyncHandler(async (req, res) => {
   const user = await User.findById(req.user._id);
-  
 
   const { productId } = req.params;
   const { quantity } = req.body;
@@ -75,6 +73,7 @@ export const updateCart = asyncHandler(async (req, res) => {
   });
 });
 
+
 export const removeFromCart = asyncHandler(async (req, res) => {
   const { productId } = req.params;
   if (!productId) {
@@ -83,7 +82,6 @@ export const removeFromCart = asyncHandler(async (req, res) => {
   }
 
   const user = await User.findById(req.user._id);
-
 
   user.cart = user.cart.filter(
     (item) => item.productId.toString() !== productId
@@ -95,6 +93,47 @@ export const removeFromCart = asyncHandler(async (req, res) => {
 
   res.status(200).json({
     message: "Item successfully removed from cart",
+    data: cartData,
+  });
+});
+
+export const handleCartQty = asyncHandler(async (req, res) => {
+  const { productId } = req.params;
+  const {quantity}= req.body;
+  if (!productId) {
+    res.status(400);
+    throw new Error("Please enter a product ID");
+  }
+
+  const quantityNum = Number(quantity);
+  if (isNaN(quantityNum) || quantityNum < 1) {
+    res.status(400);
+    throw new Error("Quantity must be a number greater than 0");
+  }
+  if (quantityNum > 2) {
+    res.status(400);
+    throw new Error("You can purchase at max two quantities");
+  }
+
+  const user = await User.findById(req.user._id).populate("cart.productId");
+
+  const ind = user.cart.findIndex(
+    (item) => item.productId._id.toString() === productId
+  );
+
+  if (ind === -1) {
+    res.status(400);
+    throw new Error("Invalid product request");
+  }
+
+  user.cart[ind].quantity = quantityNum;
+
+  await user.save();
+
+  const cartData = await getCartData(user._id);
+
+  res.status(200).json({
+    message: "Cart quantity updated successfully",
     data: cartData,
   });
 });
