@@ -1,12 +1,16 @@
 import React from 'react';
 import useCartItems from '../../hooks/useCartItems';
-import { useSelector } from 'react-redux';
+import { useDispatch, useSelector } from 'react-redux';
+import { removeFromCart } from '../../services/userActions';
+import { useNavigate } from 'react-router-dom';
 
 const Cart = () => {
   useCartItems();
+  const dispatch = useDispatch();
+  const navigate = useNavigate();
   const cartData = useSelector((store) => store.cart.cartItems);
-    
-  const cartTotal = cartData.reduce((acc, item) => acc + item.totalItemPrice, 0);
+  
+  const cartTotal = useSelector((store) => store.cart.totalCartValue);
 
   return (
     <div className="p-4 md:p-8 bg-gray-900 text-gray-100 min-h-screen">
@@ -44,7 +48,7 @@ const Cart = () => {
                     >+</button>
                     <button
                       className="ml-auto sm:ml-4 mt-2 sm:mt-0 px-3 py-1 bg-red-600 text-white rounded hover:bg-red-500"
-                    //   onClick={() => handleRemove(product._id)}
+                      onClick={async () =>  await removeFromCart(product._id, dispatch, navigate)}
                     >
                       🗑 Remove
                     </button>
